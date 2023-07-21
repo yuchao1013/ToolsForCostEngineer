@@ -1,49 +1,57 @@
-<script>
+<script setup>
 
-import {defineComponent} from "vue";
-import Login from "@/components/login.vue";
-
-export default defineComponent({
-  components: {Login}
-})
 </script>
 
 <template>
-  <div id="home">
-    <el-image id="leftImage" src="https://pic.2amok.com/20201014/5a47bc78c324737b72ce033fc3f29e6coutput_00003.jpg"/>
-
-    <div id="left">
-    </div>
-
-    <div id="right">
-      <h1>登录</h1>
-      <login/>
-    </div>
-
+  <div id="app">
+    <h1>工具箱</h1>
+    <table>
+      <tr>
+        <th><router-link to="/a" >清单定额对比</router-link></th>
+        <th><router-link to="/b">B功能</router-link></th>
+        <th><router-link to="/c">C功能</router-link></th>
+      </tr>
+    </table>
+    <p></p>
+    <router-view></router-view>
   </div>
 </template>
 
-<style>
-  #home{
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-  }
-  #left{
-    flex: 1;
-  }
-  #right{
-    width:500px;
-  }
-  #leftImage{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+<style scoped>
+
   h1{
     text-align: center;
     margin-top: 150px;
   }
+  table{
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
 
+  }
+
+  th{
+    border-width: 2px;
+    background-color: rgba(77, 72, 72, 0.25);
+  }
+
+
+  a:link,a:visited
+  {
+    display:block;
+    width:140px;
+    font-weight:bold;
+    color: white;
+    text-align:center;
+    padding:15px;
+    text-decoration:none;
+    text-transform:uppercase;
+  }
+  a:hover,a:active
+  {
+    background-color: cornflowerblue;
+  }
+  .router-link-active {
+    background-color: cornflowerblue;
+  }
 </style>
