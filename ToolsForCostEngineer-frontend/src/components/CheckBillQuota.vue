@@ -1,5 +1,5 @@
 <script setup>
-import ExcelUpload from "@/components/ExcelUpload.vue";
+import CheckBillQuotaChild from "@/components/CheckBillQuotaChild.vue";
 import {ref} from 'vue'
 let componentKey = ref(0);
 const updateClick = () => {
@@ -12,7 +12,7 @@ const updateClick = () => {
   <div>
     <p></p>
     <p>上传需要对比的excel文件（后缀：*.xls） <a href="#" :onclick="updateClick">重置</a></p>
-    <ExcelUpload :key="componentKey"></ExcelUpload>
+    <CheckBillQuotaChild :key="componentKey"></CheckBillQuotaChild>
   </div>
 </template>
 

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <span id="pageKey"></span>
   <el-upload
       ref="upload"
       class="upload-excel"
@@ -31,15 +30,18 @@
         :data="tableData"
         :width="900"
         :height="400"
-        fixed
-    />
+        fixed>
+<!--      <template #row="props">-->
+<!--        <Row v-bind="props" />-->
+<!--      </template>-->
+    </el-table-v2>
 
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { genFileId, ElMessage } from 'element-plus'
+import {cloneVNode, ref} from 'vue'
+import {genFileId, ElMessage, TableColumnCtx} from 'element-plus'
 import { UploadInstance, UploadProps, UploadRawFile} from 'element-plus'
 
 const upload = ref<UploadInstance>()
@@ -50,9 +52,6 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
   upload.value!.handleStart(file)
 }
 
-const submitUpload = () => {
-  upload.value!.submit();
-}
 const allowedType = 'application/vnd.ms-excel'
 const beforeUpload = (file) => {
   const fileType = file.type;
@@ -66,10 +65,7 @@ const beforeUpload = (file) => {
 const tableData = ref([])
 const handleSuccess = (response) => {
   // 上传成功的回调函数
-  console.log("运行上传成功的回调函数了")
   tableData.value = response
-  console.log(response)
-
 };
 
 
@@ -111,6 +107,7 @@ const columns = [
     width: 100,
   },
 ]
+
 
 </script>
 
