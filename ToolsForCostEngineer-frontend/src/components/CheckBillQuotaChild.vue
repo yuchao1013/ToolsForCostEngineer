@@ -126,10 +126,12 @@ const objectSpanMethod = ({
   }else if (columnIndex === 1) {
         if (rowIndex === startIndex1) {
           let currentName = row.billSN;
+          let currentProjectName = row.projectName;
           let rowspan = 0;
           // 计算相同值的数量
           for (let i = startIndex1; i < tableData.value.length; i++) {
-            if (tableData.value[i].billSN === currentName) {
+            //先判断单位工程名称是否一致，在判断序号是否一致，单位工程名称和序号都一致的情况下才合并清单名称和工程量
+            if (tableData.value[i].projectName === currentProjectName && tableData.value[i].billSN === currentName) {
               rowspan++;
             } else {
               break;
@@ -152,10 +154,12 @@ const objectSpanMethod = ({
     }else if (columnIndex === 2) {
     if (rowIndex === startIndex2) {
       let currentName = row.billSN;
+      let currentProjectName = row.projectName;
       let rowspan = 0;
       // 计算相同值的数量
       for (let i = startIndex2; i < tableData.value.length; i++) {
-        if (tableData.value[i].billSN === currentName) {
+        //先判断单位工程名称是否一致，在判断序号是否一致，单位工程名称和序号都一致的情况下才合并清单名称和工程量
+        if (tableData.value[i].projectName === currentProjectName && tableData.value[i].billSN === currentName) {
           rowspan++;
         } else {
           break;
@@ -178,10 +182,12 @@ const objectSpanMethod = ({
   }else if (columnIndex === 3) {
     if (rowIndex === startIndex3) {
       let currentName = row.billSN;
+      let currentProjectName = row.projectName;
       let rowspan = 0;
       // 计算相同值的数量
       for (let i = startIndex3; i < tableData.value.length; i++) {
-        if (tableData.value[i].billSN === currentName) {
+        //先判断单位工程名称是否一致，在判断序号是否一致，单位工程名称和序号都一致的情况下才合并清单名称和工程量
+        if (tableData.value[i].projectName === currentProjectName && tableData.value[i].billSN === currentName) {
           rowspan++;
         } else {
           break;

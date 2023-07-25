@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ToolsForCostEngineer.iml" filepath="$PROJECT_DIR$/ToolsForCostEngineer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ToolsForCostEngineer-backend/ToolsForCostEngineer-backend.iml" filepath="$PROJECT_DIR$/ToolsForCostEngineer-backend/ToolsForCostEngineer-backend.iml" />
       <module fileurl="file://$PROJECT_DIR$/ToolsForCostEngineer-frontend/ToolsForCostEngineer-frontend.iml" filepath="$PROJECT_DIR$/ToolsForCostEngineer-frontend/ToolsForCostEngineer-frontend.iml" />
     </modules>
   </component>
