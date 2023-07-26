@@ -1,6 +1,7 @@
 package com.yuchao.toolsforcostengineerbackend.checkbillquota.controller;
 
 import com.yuchao.toolsforcostengineerbackend.checkbillquota.entity.CheckBillQuotaResult;
+import com.yuchao.toolsforcostengineerbackend.checkbillquota.entity.CheckBillQuotaResultV2;
 import com.yuchao.toolsforcostengineerbackend.checkbillquota.service.CheckBillQuota;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,10 @@ public class FileUploadController {
     @PostMapping("/upload/excel")
     public List<CheckBillQuotaResult> excelUpload(@RequestParam("file") MultipartFile excelFile, HttpServletRequest request){
         return checkBillQuota.getResult(excelFile);
+    }
+
+    @PostMapping("/upload/CheckBillQuotaV2")
+    public List<CheckBillQuotaResultV2> checkBillQuotaV2(@RequestParam("file") MultipartFile excelFile, HttpServletRequest request){
+        return checkBillQuota.getResultV2(excelFile);
     }
 }

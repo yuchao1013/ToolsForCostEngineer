@@ -1,5 +1,6 @@
 package com.yuchao.toolsforcostengineerbackend.checkbillquota.service.impl;
 import com.yuchao.toolsforcostengineerbackend.checkbillquota.entity.CheckBillQuotaResult;
+import com.yuchao.toolsforcostengineerbackend.checkbillquota.entity.CheckBillQuotaResultV2;
 import com.yuchao.toolsforcostengineerbackend.checkbillquota.entity.TitlePosition;
 import com.yuchao.toolsforcostengineerbackend.checkbillquota.service.CheckBillQuota;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +85,84 @@ public class CheckBillQuotaImpl implements CheckBillQuota {
                             String quotaName = "";
                             if (cell != null) quotaName = cell.getStringCellValue();
                             CheckBillQuotaResult result = new CheckBillQuotaResult(projectName, SNValue, nameValue, targetCount, quotaName, quotaCount);
+                            resultList.add(result);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<CheckBillQuotaResultV2> getResultV2(MultipartFile excelFile) {
+        //将上传的文件转换成普通的File
+        File file = transferToFile(excelFile);
+        //初始化将要返回的list
+        ArrayList<CheckBillQuotaResultV2> resultList = new ArrayList<>();
+
+        try {
+            //处理文件流，并创建workbook
+            POIFSFileSystem fileSystem = new POIFSFileSystem(file);
+            Workbook workbook = new HSSFWorkbook(fileSystem);
+            fileSystem.close();
+            file.delete();
+            //获取sheet的总个数
+            int numberOfSheets = workbook.getNumberOfSheets();
+            //遍历sheet
+            for (int sheetIndex = 0; sheetIndex < numberOfSheets; sheetIndex++) {
+                Sheet sheet = workbook.getSheetAt(sheetIndex);
+                //获取单位工程名称
+                String projectName = findProjectName(sheet);
+                //将单位工程名称作为分部标题，创建标题行对象，并加入list
+                CheckBillQuotaResultV2 titleRaw = new CheckBillQuotaResultV2();
+                titleRaw.setName(projectName); //写入单位工程名称作为分部标题
+                titleRaw.setIsTitle("Y"); //标识为分部标题行
+                resultList.add(titleRaw);
+                //获取当前sheet的总行数
+                int numberOfRows = sheet.getPhysicalNumberOfRows();
+                // 初始化一个目标工程量值，每次找到清单项，将其工程量作为目标值，用于与定额工程量对比。
+                BigDecimal targetCount = null;
+                String SNValue = null;
+                String codeValue = null;
+                String nameValue = null;
+                String unitValue = null;
+                //遍历所有行
+                for (int rowNum = 0; rowNum < numberOfRows; rowNum++) {
+                    Row row = sheet.getRow(rowNum);
+                    if (row == null)
+                        continue;
+                    // 判断是否为清单
+                    if (isBill(row, titlePosition)) {
+                        targetCount = getCountValue(row, titlePosition);
+                        if (targetCount == null)
+                            targetCount = BigDecimal.valueOf(0.0);
+                        SNValue = row.getCell(titlePosition.getSNColNum()).getStringCellValue();
+                        codeValue = row.getCell(titlePosition.getIdColNum()).getStringCellValue();
+                        nameValue = row.getCell(titlePosition.getNameColNum()).getStringCellValue();
+                        unitValue = row.getCell(titlePosition.getUnitColNum()).getStringCellValue();
+                    }else if (isQuota(row, titlePosition)) { // 判断是否为定额
+                        // 取出原始定额工程量
+                        BigDecimal quotaCount = getCountValue(row, titlePosition);
+                        if (quotaCount == null)
+                            quotaCount = BigDecimal.valueOf(0.0);
+                        // 取出定额单位所包含的倍数
+                        Integer unitMultiple = getUnitMultiple(row, titlePosition);
+                        // 将倍数转为BigDecimal
+                        BigDecimal unitMultipleDecimal = new BigDecimal(unitMultiple);
+                        //清单工程量除以单位倍数，四舍五入保留4位小数，再和定额工程量对比
+                        assert targetCount != null;
+                        BigDecimal targetCountCareUnit = targetCount.divide(unitMultipleDecimal, 4, RoundingMode.HALF_UP)
+
+                        // 清单工程量不为0，并且定额和清单工程量不相等时，
+                        if (BigDecimal.valueOf(0.0).compareTo(targetCount) != 0 && quotaCount.compareTo(targetCountCareUnit) != 0) {
+                            // 读取定额名称
+                            Cell cell = row.getCell(titlePosition.getNameColNum());
+                            String quotaName = "";
+                            if (cell != null) quotaName = cell.getStringCellValue();
+                            CheckBillQuotaResultV2 result = new CheckBillQuotaResultV2(projectName, SNValue, nameValue, targetCount, quotaName, quotaCount);
                             resultList.add(result);
                         }
                     }

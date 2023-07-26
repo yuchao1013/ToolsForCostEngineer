@@ -3,7 +3,7 @@
   <el-upload
       ref="upload"
       class="upload-excel"
-      action="http://127.0.0.1:8080/upload/excel"
+      action="http://127.0.0.1:8080/upload/CheckBillQuotaV2"
       :limit="1"
       :on-exceed="handleExceed"
       :auto-upload="true"
