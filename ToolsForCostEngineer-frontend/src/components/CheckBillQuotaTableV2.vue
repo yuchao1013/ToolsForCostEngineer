@@ -24,24 +24,27 @@
   </el-upload>
   </div>
 
-  <div>
-    <el-table-v2
-        :columns="columns"
-        :data="tableData"
-        :width="900"
-        :height="400"
-        fixed>
-<!--      <template #row="props">-->
-<!--        <Row v-bind="props" />-->
-<!--      </template>-->
-    </el-table-v2>
-
+  <div style="height: 400px">
+        <el-table-v2
+            :columns="columns"
+            :data="tableData"
+            :width="900"
+            :height="650"
+            :row-class="rowClassName"
+            :row-height= 30
+            fixed>
+<!--          <template v-slot:header-cell="row">-->
+<!--            <slot v-if="row.rowData.rowType === 0">标</slot>-->
+<!--            <slot v-if="row.rowData.rowType === 1">清</slot>-->
+<!--            <slot v-if="row.rowData.rowType === 2">定</slot>-->
+<!--          </template>-->
+        </el-table-v2>
   </div>
 </template>
 
 <script setup lang="ts">
-import {cloneVNode, ref} from 'vue'
-import {genFileId, ElMessage, TableColumnCtx} from 'element-plus'
+import {cloneVNode, ref, h} from 'vue'
+import {genFileId, ElMessage, TableColumnCtx, ElTag} from 'element-plus'
 import { UploadInstance, UploadProps, UploadRawFile} from 'element-plus'
 
 const upload = ref<UploadInstance>()
@@ -68,45 +71,73 @@ const handleSuccess = (response) => {
   tableData.value = response
 };
 
-
 const columns = [
+
   {
-  key: `projectName`,
-  dataKey: `projectName`,
-  title: `单位工程名称`,
-  width: 150,
-  },
-  {
-    key: `billSN`,
-    dataKey: `billSN`,
+    key: `sn`,
+    dataKey: `sn`,
     title: `序号`,
     width: 50,
+    align: "center"
   },
   {
-    key: `billName`,
-    dataKey: `billName`,
-    title: `清单名称`,
+    key: `code`,
+    dataKey: `code`,
+    title: `项目编码`,
     width: 150,
+    align: "center"
   },
   {
-    key: `billCount`,
-    dataKey: `billCount`,
-    title: `清单工程量`,
+    key: `rowType`,
+    dataKey: `rowType`,
+    title: `类型`,
+    width: 50,
+    align: "center",
+    cellRenderer:function ({cellData}){
+      if (cellData === 0){
+        return "标"
+      }
+      if (cellData === 1){
+        return "清"
+      }
+      if (cellData === 2){
+        return "定"
+      }
+    }
+  },
+  {
+    key: `name`,
+    dataKey: `name`,
+    title: `项目名称`,
+    width: 350,
+    align: "left"
+  },
+  {
+    key: `unit`,
+    dataKey: `unit`,
+    title: `单位`,
+    width: 50,
+    align: "center"
+  },
+  {
+    key: `count`,
+    dataKey: `count`,
+    title: `工程量`,
     width: 100,
-  },
-  {
-    key: `quotaName`,
-    dataKey: `quotaName`,
-    title: `定额名称`,
-    width: 150,
-  },
-  {
-    key: `quotaCount`,
-    dataKey: `quotaCount`,
-    title: `定额工程量`,
-    width: 100,
-  },
+    align: "center"
+  }
 ]
+
+const rowClassName = function (rowProps){
+  if (rowProps.rowData.rowType === 0){
+    return "title-style"
+  }else if (rowProps.rowData.rowType === 1){
+    return "bill-style"
+  }else if (rowProps.rowData.rowType === 2){
+    return "quota-style"
+  }
+}
+
 
 
 </script>
@@ -117,5 +148,20 @@ div{
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+}
+
+/deep/ .title-style{
+  text-align: center;
+  color: #ff0000;
+}
+
+/deep/ .bill-style{
+  text-align: center;
+  color: blue;
+}
+
+/deep/ .quota-style{
+  text-align: center;
+  color: black;
 }
 </style>

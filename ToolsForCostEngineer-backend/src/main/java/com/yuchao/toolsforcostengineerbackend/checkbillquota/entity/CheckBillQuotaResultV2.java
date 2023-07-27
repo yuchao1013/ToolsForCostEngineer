@@ -22,5 +22,5 @@ public class CheckBillQuotaResultV2 {
     private String name; //项目名称
     private String unit; //单位
     private String count; //工程量
-    private String isTitle; //是否为标题行（单位工程名称作为分部标题）
+    private RowType rowType; //行类型（分部标题，清单，定额）
 }

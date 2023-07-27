@@ -7,9 +7,9 @@
     <h1>工具箱</h1>
     <table>
       <tr>
-        <th><router-link to="/a" >清单定额对比</router-link></th>
-        <th><router-link to="/b">B功能</router-link></th>
-        <th><router-link to="/c">C功能</router-link></th>
+        <th><router-link to="/b">清单定额对比</router-link></th>
+        <th><router-link to="/a" >功能二</router-link></th>
+        <th><router-link to="/c">功能三</router-link></th>
       </tr>
     </table>
     <p></p>
@@ -21,7 +21,7 @@
 
   h1{
     text-align: center;
-    margin-top: 150px;
+    margin-top: 50px;
   }
   table{
     width: 500px;
