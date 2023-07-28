@@ -116,7 +116,7 @@ const columns = [
     key: `unit`,
     dataKey: `unit`,
     title: `单位`,
-    width: 50,
+    width: 80,
     align: "center"
   },
   {
