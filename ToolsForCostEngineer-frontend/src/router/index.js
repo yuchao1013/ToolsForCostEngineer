@@ -5,7 +5,7 @@ import c from "@/components/c.vue";
 
 const router  = createRouter({
     routes:[
-        {path: '/', component: a},
+        {path: '/', component: b},
         {path: '/a', component: a},
         {path: '/b', component: b},
         {path: '/c', component: c},
